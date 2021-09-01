@@ -1,16 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 //import type * as d3Types from "./d3Types";
 import * as d3 from "d3";
+import { drawTooltip } from "./tooltip";
 
 export const DepthChart = (props) => {
   const { sellData, buyData, width, height } = props;
+
+  const svgRef = useRef();
+  const tooltipRef = useRef();
 
   useEffect(() => {
     drawChart();
   }, [buyData, sellData]);
 
   function drawChart() {
-    d3.select("#depthContainer").select("svg").remove();
+    d3.select(svgRef.current).selectAll("*").remove();
 
     const margin = { top: 20, left: 30, bottom: 20, right: 20 };
 
@@ -22,7 +26,7 @@ export const DepthChart = (props) => {
     console.log(yMaxValue);
 
     const svg = d3
-      .select("#depthContainer") //select our div with id "depthContainer" (returned at the end)
+      .select(svgRef.current) //select our div with ref svgRef (returned at the end)
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
@@ -103,7 +107,24 @@ export const DepthChart = (props) => {
       .attr("fill", "#85ff6caa")
       .attr("stroke", "none")
       .attr("d", area);
+
+    drawTooltip({
+      margin,
+      width,
+      height,
+      buyData,
+      sellData,
+      xScale,
+      yScale,
+      svgRef,
+      tooltipRef,
+    });
   }
 
-  return <div id="depthContainer" />;
+  return (
+    <div className={"chart"}>
+      <div ref={svgRef} />
+      <div ref={tooltipRef} className={"tooltip"} />
+    </div>
+  );
 };
