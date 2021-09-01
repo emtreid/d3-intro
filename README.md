@@ -6,7 +6,7 @@ This is intended to be a streamlined example of a d3 project, compatible with d3
 
 The example is of an order depth chart for a financial trading platform.
 
-It was created and presented by Scott Logic grads Matthew Beanland, JJ Gray, and Elliott Reid.
+It was created and presented by Scott Logic grads M. Beanland, JJ Gray, and E. Reid.
 
 ## getData()
 
