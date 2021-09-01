@@ -14,7 +14,7 @@ function App() {
         <DepthChart
           sellData={sellData}
           buyData={buyData}
-          width={500}
+          width={800}
           height={250}
         />
       </div>

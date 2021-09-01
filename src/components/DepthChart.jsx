@@ -47,7 +47,7 @@ export const DepthChart = (props) => {
         d3
           .axisBottom(xScale)
           .scale(xScale)
-          .ticks(width / 50)
+          .ticks(width / 100)
       );
 
     svg
@@ -75,11 +75,34 @@ export const DepthChart = (props) => {
       .attr("stroke-width", 2)
       .attr("d", line);
 
+    svg
+      .append("path")
+      .datum(buyData)
+      .attr("fill", "none")
+      .attr("stroke", "green")
+      .attr("stroke-width", 2)
+      .attr("d", line);
+
     const area = d3
       .area()
       .x((d) => xScale(d.price))
       .y0(height)
       .y1((d) => yScale(d.volume));
+
+    svg
+      .append("path")
+      .datum(sellData)
+      .attr("fill", "#ff7ea5aa")
+      //.attr("fill", "red")
+      .attr("stroke", "none")
+      .attr("d", area);
+
+    svg
+      .append("path")
+      .datum(buyData)
+      .attr("fill", "#85ff6caa")
+      .attr("stroke", "none")
+      .attr("d", area);
   }
 
   return <div id="depthContainer" />;
