@@ -13,6 +13,7 @@ export const DepthChart = (props) => {
   }, [buyData, sellData]);
 
   function drawChart() {
+    // Remove all of the elements we drew last time (we're about to draw them again)
     d3.select(svgRef.current).selectAll("*").remove();
 
     const margin = { top: 20, left: 30, bottom: 20, right: 20 };
@@ -20,18 +21,19 @@ export const DepthChart = (props) => {
     const allData = buyData.concat(sellData);
     const xMinValue = d3.min(allData, (d) => d.price);
     const xMaxValue = d3.max(allData, (d) => d.price);
-    const yMinValue = 0; //d3.min(allData, (d) => d.volume);
+    const yMinValue = 0; // d3.min(allData, (d) => d.volume);
     const yMaxValue = d3.max(allData, (d) => d.volume);
     console.log(yMaxValue);
 
     const svg = d3
-      .select(svgRef.current) //select our div with ref svgRef (returned at the end)
+      .select(svgRef.current) // Select our div with ref svgRef (returned at the end)
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
+    // Initialise scaling functions
     const xScale = d3
       .scaleLinear()
       .range([0, width])
@@ -42,6 +44,7 @@ export const DepthChart = (props) => {
       .range([height, 0])
       .domain([yMinValue, yMaxValue]);
 
+    // Add axes to SVG
     svg
       .append("g")
       .attr("class", "x-axis")
@@ -53,6 +56,7 @@ export const DepthChart = (props) => {
       .attr("class", "y-axis")
       .call(d3.axisLeft(yScale).tickSizeOuter(0));
 
+    // Add paths to SVG
     const line = d3
       .line()
       .x((d) => xScale(d.price))
@@ -74,6 +78,7 @@ export const DepthChart = (props) => {
       .attr("stroke-width", 2)
       .attr("d", line);
 
+    // Add areas to SVG
     const area = d3
       .area()
       .x((d) => xScale(d.price))
@@ -94,6 +99,7 @@ export const DepthChart = (props) => {
       .attr("stroke", "none")
       .attr("d", area);
 
+    // Extension : Add a tooltip to follow the cursor
     drawTooltip({
       margin,
       width,
