@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from "react";
-//import type * as d3Types from "./d3Types";
 import * as d3 from "d3";
 import { drawTooltip } from "./tooltip";
 
@@ -74,7 +73,6 @@ export const DepthChart = (props) => {
       .append("path")
       .datum(sellData)
       .attr("fill", "none")
-      //.attr("fill", "red")
       .attr("stroke", "red")
       .attr("stroke-width", 2)
       .attr("d", line);
@@ -97,7 +95,6 @@ export const DepthChart = (props) => {
       .append("path")
       .datum(sellData)
       .attr("fill", "#ff7ea5aa")
-      //.attr("fill", "red")
       .attr("stroke", "none")
       .attr("d", area);
 
