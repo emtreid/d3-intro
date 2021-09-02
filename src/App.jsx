@@ -7,9 +7,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Intro to D3</h1>
-      </header>
+      <h1>Intro to D3</h1>
       <div className="content">
         <DepthChart
           sellData={sellData}
