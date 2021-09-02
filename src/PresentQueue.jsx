@@ -1,3 +1,6 @@
+// stuff to be pasted into Depth chart in order to make the chart
+
+
 // App.js
 
 // 1 - creating the component

@@ -9,7 +9,6 @@ const App = () => {
     <div className="App">
       <h1>Intro to D3</h1>
       <div className="content">
-    {/*#1*/}
         <DepthChart
           sellData={sellData}
           buyData={buyData}

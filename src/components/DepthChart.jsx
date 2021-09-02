@@ -13,6 +13,7 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
   }, [buyData, sellData]);
 
   function drawChart() {
+    // Remove all of the elements we drew last time (we're about to draw them again)
     d3.select(svgRef.current).selectAll("*").remove();
 
     // Initialise constants
@@ -20,12 +21,12 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
     const allData = buyData.concat(sellData);
     const xMinValue = d3.min(allData, (d) => d.price);
     const xMaxValue = d3.max(allData, (d) => d.price);
-    const yMinValue = 0; //d3.min(allData, (d) => d.volume);
+    const yMinValue = 0; // d3.min(allData, (d) => d.volume);
     const yMaxValue = d3.max(allData, (d) => d.volume);
 
     // Initialise SVG and drawArea
     const svg = d3
-      .select(svgRef.current) //select our div with ref svgRef (returned at the end)
+      .select(svgRef.current) // Select our div with ref svgRef (returned at the end)
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom);
@@ -34,7 +35,7 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // create scales
+    // Initialise scaling functions
     const xScale = d3
       .scaleLinear()
       .range([0, width])
@@ -44,7 +45,6 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
       .scaleLinear()
       .range([height, 0])
       .domain([yMinValue, yMaxValue]);
-
 
     // Add axes to drawArea
     drawArea
