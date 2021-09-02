@@ -46,10 +46,12 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
       .domain([yMinValue, yMaxValue]);
 
     // Add axes to drawArea
+
     drawArea
       .append("g")
       .attr("class", "x-axis")
       .attr("transform", `translate(0,${height})`)
+
       .call(d3.axisBottom(xScale));
 
     drawArea

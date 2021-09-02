@@ -11,7 +11,7 @@ export const drawTooltip = ({
   svgRef,
   tooltipRef,
 }) => {
-  const svg = d3.select(svgRef.current).select("svg").select("g");
+  const drawArea = d3.select(svgRef.current).select("svg").select("g");
   const tooltip = d3.select(tooltipRef.current);
 
   const mousemove = (event) => {
@@ -55,7 +55,7 @@ export const drawTooltip = ({
     }
   };
 
-  const focus = svg.append("g").attr("class", "focus");
+  const focus = drawArea.append("g").attr("class", "focus");
 
   focus
     .append("circle")
@@ -63,7 +63,7 @@ export const drawTooltip = ({
     .attr("class", "circle")
     .style("fill", "#f0fff0");
 
-  svg
+  drawArea
     .append("rect")
     .attr("class", "overlay")
     .attr("width", width)
