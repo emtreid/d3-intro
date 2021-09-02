@@ -1,8 +1,8 @@
 import "./App.css";
-import { DepthChart } from "./components/DepthChart";
+import DepthChart from "./components/DepthChart";
 import { getData } from "./util/formatData";
 
-function App() {
+const App = () => {
   const { buyData, sellData } = getData();
 
   return (
@@ -20,6 +20,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;
