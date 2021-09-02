@@ -46,23 +46,12 @@ export const DepthChart = (props) => {
       .append("g")
       .attr("class", "x-axis")
       .attr("transform", `translate(0,${height})`)
-      .call(
-        d3
-          .axisBottom(xScale)
-          .scale(xScale)
-          .ticks(width / 100)
-      );
+      .call(d3.axisBottom(xScale));
 
     svg
       .append("g")
       .attr("class", "y-axis")
-      .call(
-        d3
-          .axisLeft(yScale)
-          .scale(yScale)
-          .ticks(height / 50)
-          .tickSizeOuter(0)
-      );
+      .call(d3.axisLeft(yScale).tickSizeOuter(0));
 
     const line = d3
       .line()
