@@ -29,7 +29,9 @@ export const DepthChart = (props) => {
       .select(svgRef.current) // Select our div with ref svgRef (returned at the end)
       .append("svg")
       .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
+      .attr("height", height + margin.top + margin.bottom);
+
+    const drawArea = svg
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -45,13 +47,13 @@ export const DepthChart = (props) => {
       .domain([yMinValue, yMaxValue]);
 
     // Add axes to SVG
-    svg
+    drawArea
       .append("g")
       .attr("class", "x-axis")
       .attr("transform", `translate(0,${height})`)
       .call(d3.axisBottom(xScale));
 
-    svg
+    drawArea
       .append("g")
       .attr("class", "y-axis")
       .call(d3.axisLeft(yScale).tickSizeOuter(0));
@@ -62,7 +64,7 @@ export const DepthChart = (props) => {
       .x((d) => xScale(d.price))
       .y((d) => yScale(d.volume));
 
-    svg
+    drawArea
       .append("path")
       .datum(sellData)
       .attr("fill", "none")
@@ -70,7 +72,7 @@ export const DepthChart = (props) => {
       .attr("stroke-width", 2)
       .attr("d", line);
 
-    svg
+    drawArea
       .append("path")
       .datum(buyData)
       .attr("fill", "none")
@@ -85,14 +87,14 @@ export const DepthChart = (props) => {
       .y0(height)
       .y1((d) => yScale(d.volume));
 
-    svg
+    drawArea
       .append("path")
       .datum(sellData)
       .attr("fill", "#ff7ea5aa")
       .attr("stroke", "none")
       .attr("d", area);
 
-    svg
+    drawArea
       .append("path")
       .datum(buyData)
       .attr("fill", "#85ff6caa")
