@@ -6,3 +6,8 @@ h1 {
   color: white;
   margin: 0;
 }
+
+.content {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
 import * as d3 from "d3";
 import { drawTooltip } from "./tooltip";
+import "./depthChart.css";
 
 const DepthChart = (props) => {
   const { sellData, buyData, width, height } = props;
