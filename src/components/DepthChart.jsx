@@ -1,10 +1,9 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import * as d3 from "d3";
 import { drawTooltip } from "./tooltip";
+import "./depthChart.css";
 
-export const DepthChart = (props) => {
-  const { sellData, buyData, width, height } = props;
-
+const DepthChart = ({ sellData, buyData, width, height }) => {
   const svgRef = useRef();
   const tooltipRef = useRef();
 
@@ -122,3 +121,5 @@ export const DepthChart = (props) => {
     </div>
   );
 };
+
+export default DepthChart;
