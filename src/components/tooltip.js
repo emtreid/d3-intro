@@ -1,18 +1,16 @@
 import * as d3 from "d3";
 
-export function drawTooltip(props) {
-  const {
-    margin,
-    width,
-    height,
-    buyData,
-    sellData,
-    xScale,
-    yScale,
-    svgRef,
-    tooltipRef,
-  } = props;
-
+export function drawTooltip({
+  margin,
+  width,
+  height,
+  buyData,
+  sellData,
+  xScale,
+  yScale,
+  svgRef,
+  tooltipRef,
+}) {
   const svg = d3.select(svgRef.current).select("svg").select("g");
   const tooltip = d3.select(tooltipRef.current);
 

@@ -3,9 +3,7 @@ import * as d3 from "d3";
 import { drawTooltip } from "./tooltip";
 import "./depthChart.css";
 
-const DepthChart = (props) => {
-  const { sellData, buyData, width, height } = props;
-
+const DepthChart = ({ sellData, buyData, width, height }) => {
   const svgRef = useRef();
   const tooltipRef = useRef();
 
