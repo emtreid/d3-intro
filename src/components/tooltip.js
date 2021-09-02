@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-export function drawTooltip({
+export const drawTooltip = ({
   margin,
   width,
   height,
@@ -10,7 +10,7 @@ export function drawTooltip({
   yScale,
   svgRef,
   tooltipRef,
-}) {
+}) => {
   const svg = d3.select(svgRef.current).select("svg").select("g");
   const tooltip = d3.select(tooltipRef.current);
 
@@ -77,4 +77,4 @@ export function drawTooltip({
       tooltip.transition().duration(300).style("opacity", 0);
     })
     .on("mousemove", mousemove);
-}
+};
