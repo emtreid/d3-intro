@@ -16,15 +16,15 @@ export const DepthChart = (props) => {
     // Remove all of the elements we drew last time (we're about to draw them again)
     d3.select(svgRef.current).selectAll("*").remove();
 
+    // Initialise constants
     const margin = { top: 20, left: 30, bottom: 20, right: 20 };
-
     const allData = buyData.concat(sellData);
     const xMinValue = d3.min(allData, (d) => d.price);
     const xMaxValue = d3.max(allData, (d) => d.price);
     const yMinValue = 0; // d3.min(allData, (d) => d.volume);
     const yMaxValue = d3.max(allData, (d) => d.volume);
-    console.log(yMaxValue);
 
+    // Initialise SVG and drawArea
     const svg = d3
       .select(svgRef.current) // Select our div with ref svgRef (returned at the end)
       .append("svg")
@@ -46,7 +46,7 @@ export const DepthChart = (props) => {
       .range([height, 0])
       .domain([yMinValue, yMaxValue]);
 
-    // Add axes to SVG
+    // Add axes to drawArea
     drawArea
       .append("g")
       .attr("class", "x-axis")
@@ -58,7 +58,7 @@ export const DepthChart = (props) => {
       .attr("class", "y-axis")
       .call(d3.axisLeft(yScale).tickSizeOuter(0));
 
-    // Add paths to SVG
+    // Add paths to drawArea
     const line = d3
       .line()
       .x((d) => xScale(d.price))
@@ -80,7 +80,7 @@ export const DepthChart = (props) => {
       .attr("stroke-width", 2)
       .attr("d", line);
 
-    // Add areas to SVG
+    // Add areas to drawArea
     const area = d3
       .area()
       .x((d) => xScale(d.price))
