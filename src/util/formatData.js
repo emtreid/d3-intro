@@ -1,12 +1,12 @@
 import { aggregatedOB } from "./mockData";
 
-export function cumulativeSum(
+export const cumulativeSum = (
   aggregatedOB,
   action,
   xmin = 9,
   xmax = 20,
   step = 0.01
-) {
+) => {
   const singleOB = aggregatedOB[action];
   console.log(singleOB);
   let formattedData = [];
@@ -27,9 +27,9 @@ export function cumulativeSum(
     formattedData.push(dataPoint);
   }
   return formattedData;
-}
+};
 
-export function getData() {
+export const getData = () => {
   const aggregatedOrderBook = aggregatedOB;
 
   // const buyData = cumulativeSum(aggregatedOrderBook, "Buy");
@@ -40,4 +40,4 @@ const buyData = cumulativeSum(aggregatedOrderBook, "Buy").filter(elem => elem.vo
 
 
   return { buyData, sellData };
-}
+};

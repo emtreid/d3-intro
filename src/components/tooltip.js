@@ -1,19 +1,17 @@
 import * as d3 from "d3";
 
-export function drawTooltip(props) {
-  const {
-    margin,
-    width,
-    height,
-    buyData,
-    sellData,
-    xScale,
-    yScale,
-    svgRef,
-    tooltipRef,
-  } = props;
-
-  const svg = d3.select(svgRef.current).select("svg").select("g");
+export const drawTooltip = ({
+  margin,
+  width,
+  height,
+  buyData,
+  sellData,
+  xScale,
+  yScale,
+  svgRef,
+  tooltipRef,
+}) => {
+  const drawArea = d3.select(svgRef.current).select("svg").select("g");
   const tooltip = d3.select(tooltipRef.current);
 
   const mousemove = (event) => {
@@ -56,7 +54,7 @@ export function drawTooltip(props) {
 
   };
 
-  const focus = svg.append("g").attr("class", "focus");
+  const focus = drawArea.append("g").attr("class", "focus");
 
   focus
     .append("circle")
@@ -64,7 +62,7 @@ export function drawTooltip(props) {
     .attr("class", "circle")
     .style("fill", "#f0fff0");
 
-  svg
+  drawArea
     .append("rect")
     .attr("class", "overlay")
     .attr("width", width)
@@ -78,4 +76,4 @@ export function drawTooltip(props) {
       tooltip.transition().duration(300).style("opacity", 0);
     })
     .on("mousemove", mousemove);
-}
+};

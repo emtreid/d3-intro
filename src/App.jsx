@@ -1,15 +1,13 @@
 import "./App.css";
-import { DepthChart } from "./components/DepthChart";
+import DepthChart from "./components/DepthChart";
 import { getData } from "./util/formatData";
 
-function App() {
+const App = () => {
   const { buyData, sellData } = getData();
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Intro to D3</h1>
-      </header>
+      <h1>Intro to D3</h1>
       <div className="content">
     {/*#1*/}
         <DepthChart
@@ -21,6 +19,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;

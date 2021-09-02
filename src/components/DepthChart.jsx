@@ -1,10 +1,9 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import * as d3 from "d3";
 import { drawTooltip } from "./tooltip";
+import "./depthChart.css";
 
-export const DepthChart = (props) => {
-  const { sellData, buyData, width, height } = props;
-
+const DepthChart = ({ sellData, buyData, width, height }) => {
   const svgRef = useRef();
   const tooltipRef = useRef();
 
@@ -16,21 +15,22 @@ export const DepthChart = (props) => {
   function drawChart() {
     d3.select(svgRef.current).selectAll("*").remove();
 
-    // declare constants
+    // Initialise constants
     const margin = { top: 20, left: 30, bottom: 20, right: 20 };
-
     const allData = buyData.concat(sellData);
     const xMinValue = d3.min(allData, (d) => d.price);
     const xMaxValue = d3.max(allData, (d) => d.price);
     const yMinValue = 0; //d3.min(allData, (d) => d.volume);
     const yMaxValue = d3.max(allData, (d) => d.volume);
 
-    // create svg
+    // Initialise SVG and drawArea
     const svg = d3
       .select(svgRef.current) //select our div with ref svgRef (returned at the end)
       .append("svg")
       .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
+      .attr("height", height + margin.top + margin.bottom);
+
+    const drawArea = svg
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -46,31 +46,19 @@ export const DepthChart = (props) => {
       .domain([yMinValue, yMaxValue]);
 
 
-     // draw axis
-    svg
+    // Add axes to drawArea
+    drawArea
       .append("g")
       .attr("class", "x-axis")
       .attr("transform", `translate(0,${height})`)
-      .call(
-        d3
-          .axisBottom(xScale)
-          .scale(xScale)
-          .ticks(width / 100)
-      );
+      .call(d3.axisBottom(xScale));
 
-    svg
+    drawArea
       .append("g")
       .attr("class", "y-axis")
-      .call(
-        d3
-          .axisLeft(yScale)
-          .scale(yScale)
-          .ticks(height / 50)
-          .tickSizeOuter(0)
-      );
+      .call(d3.axisLeft(yScale).tickSizeOuter(0));
 
-
-    // Add areas to SVG
+    // Add areas to drawArea
     const area = d3
       .area()
       .x((d) => xScale(d.price))
@@ -78,7 +66,7 @@ export const DepthChart = (props) => {
       .y1((d) => yScale(d.volume));
 
 
-    svg
+    drawArea
       .append("path")
       .datum(sellData)
       .attr("fill", "#ff7ea5aa")
@@ -86,7 +74,7 @@ export const DepthChart = (props) => {
       .attr("stroke-width", 2)
       .attr("d", area);
 
-    svg
+    drawArea
       .append("path")
       .datum(buyData)
       .attr("fill", "#85ff6caa")
@@ -116,3 +104,5 @@ export const DepthChart = (props) => {
     </div>
   );
 };
+
+export default DepthChart;
