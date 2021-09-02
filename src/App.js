@@ -11,6 +11,7 @@ function App() {
         <h1>Intro to D3</h1>
       </header>
       <div className="content">
+    {/*#1*/}
         <DepthChart
           sellData={sellData}
           buyData={buyData}

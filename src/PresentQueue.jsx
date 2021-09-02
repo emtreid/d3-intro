@@ -1,12 +1,25 @@
+// App.js
+
+// 1 - creating the component
+ <DepthChart
+          sellData={sellData}
+          buyData={buyData}
+          width={800}
+          height={250}
+        />
+
+
+
+
+
+// DepthChart.jsx
+
+
 import React, { useRef, useEffect } from "react";
 import * as d3 from "d3";
-import { drawTooltip } from "./tooltip";
 
 export const DepthChart = (props) => {
   const { sellData, buyData, width, height } = props;
-
-  const svgRef = useRef();
-  const tooltipRef = useRef();
 
   // redraw chart whenever data changes (e.g. redux store update)
   useEffect(() => {
@@ -14,18 +27,27 @@ export const DepthChart = (props) => {
   }, [buyData, sellData]);
 
   function drawChart() {
+     // your graph here
+  }
+
+  return (
+    <div className={"chart"}></div>
+  );
+};
+
+
+// 2 - creating the svg
+
+    // at start of component
+      const svgRef = useRef();
+  const tooltipRef = useRef();
+
+  // in draw chart
+
     d3.select(svgRef.current).selectAll("*").remove();
 
-    // declare constants
     const margin = { top: 20, left: 30, bottom: 20, right: 20 };
 
-    const allData = buyData.concat(sellData);
-    const xMinValue = d3.min(allData, (d) => d.price);
-    const xMaxValue = d3.max(allData, (d) => d.price);
-    const yMinValue = 0; //d3.min(allData, (d) => d.volume);
-    const yMaxValue = d3.max(allData, (d) => d.volume);
-
-    // create svg
     const svg = d3
       .select(svgRef.current) //select our div with ref svgRef (returned at the end)
       .append("svg")
@@ -34,7 +56,35 @@ export const DepthChart = (props) => {
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // create scales
+      // overlay to show size of svg for demonstation
+       svg
+      .append("rect")
+      .attr("fill", "red")
+      .attr("width", width)
+      .attr("height", height)
+
+
+
+
+       return (
+    <div className={"chart"}>
+      <div ref={svgRef} />
+      {/*<div ref={tooltipRef} className={"tooltip"} />*/}
+    </div>
+  );
+};
+
+
+// 3 - creating the scales
+
+	
+    const allData = buyData.concat(sellData);
+    const xMinValue = d3.min(allData, (d) => d.price);
+    const xMaxValue = d3.max(allData, (d) => d.price);
+    const yMinValue = 0; //d3.min(allData, (d) => d.volume);
+    const yMaxValue = d3.max(allData, (d) => d.volume);
+
+
     const xScale = d3
       .scaleLinear()
       .range([0, width])
@@ -46,7 +96,8 @@ export const DepthChart = (props) => {
       .domain([yMinValue, yMaxValue]);
 
 
-     // draw axis
+// 4 - Adding the axis
+
     svg
       .append("g")
       .attr("class", "x-axis")
@@ -69,6 +120,36 @@ export const DepthChart = (props) => {
           .tickSizeOuter(0)
       );
 
+
+// 5 - Adding the first line
+
+
+    const line = d3
+      .line()
+      .x((d) => xScale(d.price))
+      .y((d) => yScale(d.volume));
+
+ svg
+      .append("path")
+      .datum(sellData)
+      .attr("fill", "none")
+      .attr("stroke", "red")
+      .attr("stroke-width", 2)
+      .attr("d", line);
+
+// 6 - Adding the second line
+
+    svg
+      .append("path")
+      .datum(buyData)
+      .attr("fill", "none")
+      .attr("stroke", "green")
+      .attr("stroke-width", 2)
+      .attr("d", line);
+
+
+
+// 7 - Switching lines to areas
 
     // Add areas to SVG
     const area = d3
@@ -94,6 +175,9 @@ export const DepthChart = (props) => {
       .attr("stroke-width", 2)
       .attr("d", area);
 
+
+// 8
+
     // Extension : Add a tooltip to follow the cursor
     drawTooltip({
       margin,
@@ -107,12 +191,5 @@ export const DepthChart = (props) => {
       tooltipRef,
     });
 
-  }
 
-  return (
-    <div className={"chart"}>
-        <div ref={svgRef} />
-      <div ref={tooltipRef} className={"tooltip"} />
-    </div>
-  );
-};
+import { drawTooltip } from "./tooltip";
