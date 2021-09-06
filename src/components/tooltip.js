@@ -15,9 +15,8 @@ export const drawTooltip = ({
   const tooltip = d3.select(tooltipRef.current);
 
   const mousemove = (event) => {
-    const bisect = d3.bisector((d) => d.price).left; //create a "bisector"
     const xPos = d3.pointer(event)[0];
-
+    const bisect = d3.bisector((d) => d.price).left; //create a "bisector"
     const buyIndex = bisect(buyData, xScale.invert(xPos));
     const sellIndex = bisect(sellData, xScale.invert(xPos));
 
@@ -28,26 +27,21 @@ export const drawTooltip = ({
     // take whichever exists as our data
     const data = buyPoint ? buyPoint : sellPoint;
     const action = buyPoint ? "Buy" : "Sell";
-
-    tooltip
-      .style("left", event.pageX + 15 + "px")
-      .style("top", event.pageY + "px")
-      .classed("Buy", action === "Buy")
-      .classed("Sell", action === "Sell")
-      .transition()
-      .duration(100)
-      .style("opacity", 1);
-
     focus.style(
       "transform",
       `translate(${xScale(data.price)}px,${yScale(data.volume)}px)`
     );
 
-    const tooltipContent = `<span><b>${action} orders</b></span><br><b>Price: </b>${
+    const tooltipContent = `<span><b>${action} orders</b></span><br><b>Price: </b>£${
       Math.round(data.price * 100) / 100
     }<br><b>Volume: </b>${data.volume}`;
 
     tooltip.html(tooltipContent || data.price);
+    tooltip
+      .style("left", event.pageX + 15 + "px")
+      .style("top", event.pageY + "px")
+      .classed("Buy", action === "Buy")
+      .classed("Sell", action === "Sell");
   };
 
   const focus = drawArea.append("g").attr("class", "focus");
@@ -66,6 +60,7 @@ export const drawTooltip = ({
     .style("opacity", 0)
     .on("mouseover", () => {
       focus.style("opacity", 1);
+      tooltip.transition().duration(100).style("opacity", 1);
     })
     .on("mouseout", () => {
       focus.style("opacity", 0);
