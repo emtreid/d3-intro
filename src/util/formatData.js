@@ -32,8 +32,9 @@ export const cumulativeSum = (
 export const getData = () => {
   const aggregatedOrderBook = aggregatedOB;
 
-  const buyData = cumulativeSum(aggregatedOrderBook, "Buy");
-  const sellData = cumulativeSum(aggregatedOrderBook, "Sell");
+  const buyData = cumulativeSum(aggregatedOrderBook, "Buy").filter(elem => elem.volume !== 0);
+  const sellData = cumulativeSum(aggregatedOrderBook, "Sell").filter(elem => elem.volume !== 0);
+
 
   return { buyData, sellData };
 };

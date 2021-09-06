@@ -17,9 +17,18 @@ export const drawTooltip = ({
   const mousemove = (event) => {
     const bisect = d3.bisector((d) => d.price).left; //create a "bisector"
     const xPos = d3.pointer(event)[0];
-    const x0 = bisect(buyData, xScale.invert(xPos));
-    const buyPoint = buyData[x0]; //extract the buy/sell points closest to our mouse pointer's x-position
-    const sellPoint = sellData[x0];
+
+    const buyIndex = bisect(buyData, xScale.invert(xPos));
+    const sellIndex = bisect(sellData, xScale.invert(xPos));
+
+   // search index in both buy and sell data
+    const buyPoint = buyData[buyIndex];
+    const sellPoint = sellData[sellIndex];
+
+    // take whichever exists as our data
+    const data = buyPoint ? buyPoint : sellPoint;
+    const action = buyPoint ? "Buy" : "Sell";
+
 
     tooltip
       .style("left", event.pageX + 15 + "px")
@@ -28,31 +37,21 @@ export const drawTooltip = ({
       .duration(100)
       .style("opacity", 1);
 
-    if (sellPoint.volume >= buyPoint.volume) {
-      const d0 = sellPoint;
+
       focus.style(
         "transform",
-        `translate(${xScale(d0.price)}px,${yScale(d0.volume)}px)`
+        `translate(${xScale(data.price)}px,${yScale(data.volume)}px)`
       );
 
-      const tooltipContent = `<b>Sell orders</b><br><b>Price: </b>${
-        Math.round(d0.price * 100) / 100
-      }<br><b>Volume: </b>${d0.volume}`;
 
-      tooltip.html(tooltipContent || d0.price);
-    } else {
-      const d0 = buyPoint;
-      focus.style(
-        "transform",
-        `translate(${xScale(d0.price)}px,${yScale(d0.volume)}px)`
-      );
+      const tooltipContent = `<b>${action} orders</b><br><b>Price: </b>${
+        Math.round(data.price * 100) / 100
+      }<br><b>Volume: </b>${data.volume}`;
 
-      const tooltipContent = `<b>Buy orders</b><br><b>Price: </b>${
-        Math.round(d0.price * 100) / 100
-      }<br><b>Volume: </b>${d0.volume}`;
 
-      tooltip.html(tooltipContent || d0.price);
-    }
+      tooltip.html(tooltipContent || data.price);
+
+
   };
 
   const focus = drawArea.append("g").attr("class", "focus");

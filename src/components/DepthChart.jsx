@@ -7,6 +7,7 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
   const svgRef = useRef();
   const tooltipRef = useRef();
 
+  // redraw chart whenever data changes (e.g. redux store update)
   useEffect(() => {
     drawChart();
   }, [buyData, sellData]);
@@ -46,40 +47,16 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
       .domain([yMinValue, yMaxValue]);
 
     // Add axes to drawArea
-
     drawArea
       .append("g")
       .attr("class", "x-axis")
       .attr("transform", `translate(0,${height})`)
-
       .call(d3.axisBottom(xScale));
 
     drawArea
       .append("g")
       .attr("class", "y-axis")
       .call(d3.axisLeft(yScale).tickSizeOuter(0));
-
-    // Add paths to drawArea
-    const line = d3
-      .line()
-      .x((d) => xScale(d.price))
-      .y((d) => yScale(d.volume));
-
-    drawArea
-      .append("path")
-      .datum(sellData)
-      .attr("fill", "none")
-      .attr("stroke", "red")
-      .attr("stroke-width", 2)
-      .attr("d", line);
-
-    drawArea
-      .append("path")
-      .datum(buyData)
-      .attr("fill", "none")
-      .attr("stroke", "green")
-      .attr("stroke-width", 2)
-      .attr("d", line);
 
     // Add areas to drawArea
     const area = d3
@@ -88,18 +65,21 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
       .y0(height)
       .y1((d) => yScale(d.volume));
 
+
     drawArea
       .append("path")
       .datum(sellData)
       .attr("fill", "#ff7ea5aa")
-      .attr("stroke", "none")
+      .attr("stroke", "red")
+      .attr("stroke-width", 2)
       .attr("d", area);
 
     drawArea
       .append("path")
       .datum(buyData)
       .attr("fill", "#85ff6caa")
-      .attr("stroke", "none")
+      .attr("stroke", "green")
+      .attr("stroke-width", 2)
       .attr("d", area);
 
     // Extension : Add a tooltip to follow the cursor
@@ -114,11 +94,12 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
       svgRef,
       tooltipRef,
     });
+
   }
 
   return (
     <div className={"chart"}>
-      <div ref={svgRef} />
+        <div ref={svgRef} />
       <div ref={tooltipRef} className={"tooltip"} />
     </div>
   );
