@@ -11,3 +11,11 @@
   color: beige;
   font-size: 14px;
 }
+
+.Buy span {
+  color: rgb(60, 219, 60);
+}
+
+.Sell span {
+  color: rgb(243, 65, 65);
+}
