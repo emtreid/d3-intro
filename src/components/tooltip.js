@@ -21,7 +21,7 @@ export const drawTooltip = ({
     const buyIndex = bisect(buyData, xScale.invert(xPos));
     const sellIndex = bisect(sellData, xScale.invert(xPos));
 
-   // search index in both buy and sell data
+    // search index in both buy and sell data
     const buyPoint = buyData[buyIndex];
     const sellPoint = sellData[sellIndex];
 
@@ -29,29 +29,25 @@ export const drawTooltip = ({
     const data = buyPoint ? buyPoint : sellPoint;
     const action = buyPoint ? "Buy" : "Sell";
 
-
     tooltip
       .style("left", event.pageX + 15 + "px")
       .style("top", event.pageY + "px")
+      .classed("Buy", action === "Buy")
+      .classed("Sell", action === "Sell")
       .transition()
       .duration(100)
       .style("opacity", 1);
 
+    focus.style(
+      "transform",
+      `translate(${xScale(data.price)}px,${yScale(data.volume)}px)`
+    );
 
-      focus.style(
-        "transform",
-        `translate(${xScale(data.price)}px,${yScale(data.volume)}px)`
-      );
+    const tooltipContent = `<span><b>${action} orders</b></span><br><b>Price: </b>${
+      Math.round(data.price * 100) / 100
+    }<br><b>Volume: </b>${data.volume}`;
 
-
-      const tooltipContent = `<b>${action} orders</b><br><b>Price: </b>${
-        Math.round(data.price * 100) / 100
-      }<br><b>Volume: </b>${data.volume}`;
-
-
-      tooltip.html(tooltipContent || data.price);
-
-
+    tooltip.html(tooltipContent || data.price);
   };
 
   const focus = drawArea.append("g").attr("class", "focus");

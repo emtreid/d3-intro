@@ -65,7 +65,6 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
       .y0(height)
       .y1((d) => yScale(d.volume));
 
-
     drawArea
       .append("path")
       .datum(sellData)
@@ -94,12 +93,11 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
       svgRef,
       tooltipRef,
     });
-
   }
 
   return (
     <div className={"chart"}>
-        <div ref={svgRef} />
+      <div ref={svgRef} />
       <div ref={tooltipRef} className={"tooltip"} />
     </div>
   );
