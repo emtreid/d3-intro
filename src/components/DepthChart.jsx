@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import * as d3 from "d3";
 import { drawTooltip } from "./tooltip";
 import "./depthChart.css";
@@ -7,11 +7,20 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
   const svgRef = useRef();
   const tooltipRef = useRef();
 
-  // redraw chart whenever data changes (e.g. redux store update)
-  useEffect(() => {
-    drawChart();
-  }, [buyData, sellData]);
+  // place chart-drawing code inside a callback so that
+  // a memoized calue is used unless data is updated
+  const drawChartMemoized = useCallback(drawChart, [
+    buyData,
+    sellData,
+    width,
+    height,
+  ]);
 
+  useEffect(() => {
+    drawChartMemoized();
+  }, [buyData, sellData, drawChartMemoized]);
+
+  // redraw chart whenever data changes (e.g. redux store update)
   function drawChart() {
     // Remove all of the elements we drew last time (we're about to draw them again)
     d3.select(svgRef.current).selectAll("*").remove();
@@ -65,7 +74,6 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
       .y0(height)
       .y1((d) => yScale(d.volume));
 
-
     drawArea
       .append("path")
       .datum(sellData)
@@ -94,12 +102,11 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
       svgRef,
       tooltipRef,
     });
-
   }
 
   return (
     <div className={"chart"}>
-        <div ref={svgRef} />
+      <div ref={svgRef} />
       <div ref={tooltipRef} className={"tooltip"} />
     </div>
   );
