@@ -17,7 +17,7 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
     d3.select(svgRef.current).selectAll("*").remove();
 
     // Initialise constants
-    const margin = { top: 20, left: 30, bottom: 20, right: 20 };
+    const margin = { top: 20, left: 40, bottom: 35, right: 20 };
     const allData = buyData.concat(sellData);
     const xMinValue = d3.min(allData, (d) => d.price);
     const xMaxValue = d3.max(allData, (d) => d.price);
@@ -80,6 +80,23 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
       .attr("stroke", "green")
       .attr("stroke-width", 2)
       .attr("d", area);
+
+    drawArea
+      .append("text")
+      .attr("x", width / 2)
+      .attr("y", height + margin.bottom - 3)
+      .style("text-anchor", "middle")
+      .style("fill", "#f0fff0")
+      .text("Price [GBP]");
+
+    drawArea
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -height / 2)
+      .attr("y", -margin.left + 10)
+      .style("text-anchor", "middle")
+      .style("fill", "#f0fff0")
+      .text("Volume");
 
     // Extension : Add a tooltip to follow the cursor
     drawTooltip({
