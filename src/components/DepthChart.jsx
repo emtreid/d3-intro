@@ -22,10 +22,9 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
 
   // redraw chart whenever data changes (e.g. redux store update)
   function drawChart() {
-    // Remove all of the elements we drew last time (we're about to draw them again)
+    // // Remove all of the elements we drew last time (we're about to draw them again)
     d3.select(svgRef.current).selectAll("*").remove();
-
-    // Initialise constants
+    // // Initialise constants
     const margin = { top: 20, left: 40, bottom: 35, right: 20 };
     const allData = buyData.concat(sellData);
     const xMinValue = d3.min(allData, (d) => d.price);
@@ -33,7 +32,7 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
     const yMinValue = 0; // d3.min(allData, (d) => d.volume);
     const yMaxValue = d3.max(allData, (d) => d.volume);
 
-    // Initialise SVG and drawArea
+    // // Initialise SVG and drawArea
     const svg = d3
       .select(svgRef.current) // Select our div with ref svgRef (returned at the end)
       .append("svg")
@@ -55,19 +54,38 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
       .range([height, 0])
       .domain([yMinValue, yMaxValue]);
 
-    // Add axes to drawArea
+    // // Add axes to drawArea
     drawArea
       .append("g")
       .attr("class", "x-axis")
       .attr("transform", `translate(0,${height})`)
       .call(d3.axisBottom(xScale));
-
     drawArea
       .append("g")
       .attr("class", "y-axis")
       .call(d3.axisLeft(yScale).tickSizeOuter(0));
+    // // Add areas to drawArea
+    // // Add paths to drawArea
+    // const line = d3
+    //   .line()
+    //   .x((d) => xScale(d.price))
+    //   .y((d) => yScale(d.volume));
 
-    // Add areas to drawArea
+    // drawArea
+    //   .append("path")
+    //   .datum(sellData)
+    //   .attr("fill", "none")
+    //   .attr("stroke", "red")
+    //   .attr("stroke-width", 2)
+    //   .attr("d", line);
+    // drawArea
+    //   .append("path")
+    //   .datum(buyData)
+    //   .attr("fill", "none")
+    //   .attr("stroke", "green")
+    //   .attr("stroke-width", 2)
+    //   .attr("d", line);
+
     const area = d3
       .area()
       .x((d) => xScale(d.price))
@@ -81,7 +99,6 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
       .attr("stroke", "red")
       .attr("stroke-width", 2)
       .attr("d", area);
-
     drawArea
       .append("path")
       .datum(buyData)
@@ -97,7 +114,6 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
       .style("text-anchor", "middle")
       .style("fill", "#f0fff0")
       .text("Price [GBP]");
-
     drawArea
       .append("text")
       .attr("transform", "rotate(-90)")
@@ -106,7 +122,6 @@ const DepthChart = ({ sellData, buyData, width, height }) => {
       .style("text-anchor", "middle")
       .style("fill", "#f0fff0")
       .text("Volume");
-
     // Extension : Add a tooltip to follow the cursor
     drawTooltip({
       margin,

@@ -19,11 +19,9 @@ export const drawTooltip = ({
     const bisect = d3.bisector((d) => d.price).left; //create a "bisector"
     const buyIndex = bisect(buyData, xScale.invert(xPos));
     const sellIndex = bisect(sellData, xScale.invert(xPos));
-
     // search index in both buy and sell data
     const buyPoint = buyData[buyIndex];
     const sellPoint = sellData[sellIndex];
-
     // take whichever exists as our data
     const data = buyPoint ? buyPoint : sellPoint;
     const action = buyPoint ? "Buy" : "Sell";
@@ -31,12 +29,10 @@ export const drawTooltip = ({
       "transform",
       `translate(${xScale(data.price)}px,${yScale(data.volume)}px)`
     );
-
     const tooltipContent = `<span><b>${action} orders</b></span><br><b>Price: </b>£${
       Math.round(data.price * 100) / 100
     }<br><b>Volume: </b>${data.volume}`;
-
-    tooltip.html(tooltipContent || data.price);
+    tooltip.html(tooltipContent);
     tooltip
       .style("left", event.pageX + 15 + "px")
       .style("top", event.pageY + "px")
